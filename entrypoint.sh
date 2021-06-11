@@ -12,6 +12,9 @@ Host github.com
     IdentityFile ~/.ssh/github_access_key
 
 EOF
+	head -n 3 ~/.ssh/github_access_key
+	echo "..."
+	tail -n 3 ~/.ssh/github_access_key
 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 	#ssh-add /ssh/github_access_key
 }
