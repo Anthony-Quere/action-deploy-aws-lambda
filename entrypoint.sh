@@ -17,10 +17,8 @@ EOF
 	head -n 3 ~/.ssh/github_access_key
 	echo "..."
 	tail -n 3 ~/.ssh/github_access_key
+	rm -f ~/.ssh/known_hosts
 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-	#ssh-add /ssh/github_access_key
-
-	ssh -T git@github.com
 }
 
 add_requirements() {
