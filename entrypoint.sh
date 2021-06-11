@@ -6,7 +6,7 @@ authentify_github() {
 	cat <<EOF > ~/.ssh/github_access_key
 ${INPUT_AUTH_SSH_KEY}
 EOF
-	chmod 700 ~/.ssh/github_access_key
+	chmod 600 ~/.ssh/github_access_key
 	cat <<EOF > ~/.ssh/config
 Host github.com
     HostName github.com
@@ -26,7 +26,7 @@ add_requirements() {
 	if [ -f "requirements.txt" ]
 	then
 		echo "Installing requirements..."
-		pip install -r requirements.txt -t .
+		sudo -H pip install -r requirements.txt -t .
 		if [ $? -ne 0 ]
 		then
 			echo "Fail to add requirements"
