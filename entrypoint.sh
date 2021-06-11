@@ -19,7 +19,7 @@ EOF
 	tail -n 3 ~/.ssh/github_access_key
 	rm -f ~/.ssh/known_hosts
 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-	echo "User $USER"
+	ssh -i ~/.ssh/github_access_key git@github.com
 }
 
 add_requirements() {
