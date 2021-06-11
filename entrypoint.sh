@@ -20,6 +20,7 @@ EOF
 	rm -f ~/.ssh/known_hosts
 	ssh-keyscan -t rsa github.com >> ~/.ssh/
 	ls ~/.ssh/known_hosts
+	cat ~/.ssh/known_hosts
 }
 
 add_requirements() {
