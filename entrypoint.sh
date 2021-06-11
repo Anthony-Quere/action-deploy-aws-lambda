@@ -12,6 +12,7 @@ Host github.com
     HostName github.com
     User git
     IdentityFile ~/.ssh/github_access_key
+	StrictHostKeyChecking no
 
 EOF
 	head -n 3 ~/.ssh/github_access_key
