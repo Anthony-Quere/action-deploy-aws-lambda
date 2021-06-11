@@ -5,6 +5,13 @@ authentify_github() {
 	mkdir -p .ssh 
 	echo "${INPUT_AUTH_SSH_KEY}" > .ssh/github_access_key
 	chmod 700 .ssh/github_access_key
+	cat <<EOF
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile $PWD/.ssh/github
+
+EOF
 	#ssh-add /ssh/github_access_key
 }
 
