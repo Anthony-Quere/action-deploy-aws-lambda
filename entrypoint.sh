@@ -1,5 +1,15 @@
 #!/bin/bash
 
+authentify_github() {
+	if ! [ -z "${INPUT_GITHUB_SSH_KEY}" ]
+	then
+		echo "Authententication with github ssh key"
+		mkdir /ssh 
+		echo "${INPUT_GITHUB_SSH_KEY}" > /ssh/github_access_key
+		ssh-add /ssh/github_access_key
+	fi
+}
+
 add_requirements() {
 	if [ -f "requirements.txt" ]
 	then
