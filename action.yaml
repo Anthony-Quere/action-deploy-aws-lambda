@@ -29,7 +29,7 @@ inputs:
   vpc_config:
     description: VPC configuration in the format SubnetIds=string,string,SecurityGroupIds=string,string
     required: false
-  github_ssh_key:
+  auth_ssh_key:
     description: Github SSH key used to access private dependencies
     required: false
 
@@ -45,7 +45,7 @@ runs:
     - ${{ inputs.memory }}
     - ${{ inputs.timeout }}
     - ${{ inputs.env_variables }}
-    - ${{ inputs.github_ssh_key }}
+    - ${{ inputs.auth_ssh_key }}
 branding:
   icon: "cloud-lightning"
   color: "orange"
