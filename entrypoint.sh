@@ -1,13 +1,10 @@
 #!/bin/bash
 
 authentify_github() {
-	if ! [ -z "${INPUT_AUTH_SSH_KEY}" ]
-	then
-		echo "Authententication with github ssh key"
-		mkdir /ssh 
-		echo "${INPUT_AUTH_SSH_KEY}" > /ssh/github_access_key
-		ssh-add /ssh/github_access_key
-	fi
+	echo "Authentication with github ssh key"
+	mkdir /ssh 
+	echo "${INPUT_AUTH_SSH_KEY}" > /ssh/github_access_key
+	ssh-add /ssh/github_access_key
 }
 
 add_requirements() {
