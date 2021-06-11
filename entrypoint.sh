@@ -85,4 +85,5 @@ show_environment() {
 echo "dpolombo/action-deploy-aws-lambda@v1.6"
 aws --version
 show_environment
+authentify_github
 deploy_or_update_function
