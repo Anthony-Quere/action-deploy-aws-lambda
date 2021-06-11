@@ -9,7 +9,7 @@ authentify_github() {
 Host github.com
     HostName github.com
     User git
-    IdentityFile $PWD/.ssh/github
+    IdentityFile $PWD/.ssh/github_access_key
 
 EOF
 	#ssh-add /ssh/github_access_key
