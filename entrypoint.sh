@@ -28,7 +28,7 @@ add_requirements() {
 	if [ -f "requirements.txt" ]
 	then
 		echo "Installing requirements..."
-		pip install -r requirements.txt -t .
+		pip install -vvv -r requirements.txt -t .
 		if [ $? -ne 0 ]
 		then
 			echo "Fail to add requirements"
