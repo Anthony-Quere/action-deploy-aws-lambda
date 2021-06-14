@@ -1,43 +1,20 @@
 #!/bin/bash
 
-authentify_github() {
+setup_requirement_file() {
 	echo "Authentication with github ssh key"
 
 	TOKEN=${INPUT_AUTH_SSH_KEY}
 
-	sed 's/https://github.com/https://$TOKEN:github.com' requirements.txt
-	sed 's/ssh://github.com/https://$TOKEN:github.com' requirements.txt
-
-	# git config --global user.name "dktunited"
-	# git config --global user.password ${INPUT_AUTH_SSH_KEY}
-# 	mkdir -p ~/.ssh
-# 	cat <<EOF > ~/.ssh/github_access_key
-# ${INPUT_AUTH_SSH_KEY}
-# EOF
-# 	export GIT_SSH_COMMAND="ssh -i ~/.ssh/github_access_key"
-# 	chmod 660 ~/.ssh/github_access_key 
-# 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-# 	cat <<EOF > ~/.ssh/config
-# Host github.com
-#     HostName github.com
-#     User git
-#     IdentityFile ~/.ssh/github_access_key
-# 	StrictHostKeyChecking no
-
-# EOF
-# 	head -n 3 ~/.ssh/github_access_key
-# 	echo "..."
-# 	tail -n 3 ~/.ssh/github_access_key
-# 	rm -f ~/.ssh/known_hosts
-# 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-# 	ssh -i ~/.ssh/github_access_key git@github.com
+	sed "s/https:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" app/requirements.txt > temp_requirements.txt
+	sed "s/ssh:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" temp_requirements.txt > temp_requirements.txt
 }
 
 add_requirements() {
-	if [ -f "requirements.txt" ]
+	if [ -f "app/requirements.txt" ]
 	then
+		setup_requirement_file
 		echo "Installing requirements..."
-		pip install -vvv -r requirements.txt -t .
+		pip install --target libs -r temp_requirements.txt -t .
 		if [ $? -ne 0 ]
 		then
 			echo "Fail to add requirements"
@@ -64,7 +41,7 @@ update_function() {
 	echo "Updating function ..."
 	RETCODE=0
 	cd "${INPUT_WORKING_DIRECTORY}"
-	add_requirements
+	# add_requirements
 	zip -r code.zip . -x \*.git\*
 	aws lambda update-function-configuration --function-name "${INPUT_FUNCTION_NAME}" --runtime "${INPUT_RUNTIME}" \
 		--timeout "${INPUT_TIMEOUT}" --memory-size "${INPUT_MEMORY}" --role "${INPUT_ROLE}" \
@@ -77,6 +54,7 @@ update_function() {
 }
 
 deploy_or_update_function() {
+	cd app
 	if [ -n "${INPUT_ENV_VARIABLES}" ]
     then 
             OPT_ENV_VARIABLES="--environment Variables=${INPUT_ENV_VARIABLES}"
@@ -112,7 +90,13 @@ show_environment() {
 
 echo "dpolombo/action-deploy-aws-lambda@v1.6"
 aws --version
-cd app
 show_environment
-authentify_github
+add_requirements
+
+echo "ls"
+ls
+
+echo "ls libs"
+ls libs
+
 deploy_or_update_function
