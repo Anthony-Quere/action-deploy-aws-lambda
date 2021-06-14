@@ -1,29 +1,29 @@
 #!/bin/bash
 
-authentify_github() {
-	echo "Authentication with github ssh key"
-	mkdir -p ~/.ssh
-	cat <<EOF > ~/.ssh/github_access_key
-${INPUT_AUTH_SSH_KEY}
-EOF
-	export GIT_SSH_COMMAND="ssh -i ~/.ssh/github_access_key"
-	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-# 	chmod 660 ~/.ssh/github_access_key
-# 	cat <<EOF > ~/.ssh/config
-# Host github.com
-#     HostName github.com
-#     User git
-#     IdentityFile ~/.ssh/github_access_key
-# 	StrictHostKeyChecking no
-
+# authentify_github() {
+# 	echo "Authentication with github ssh key"
+# 	mkdir -p ~/.ssh
+# 	cat <<EOF > ~/.ssh/github_access_key
+# ${INPUT_AUTH_SSH_KEY}
 # EOF
-# 	head -n 3 ~/.ssh/github_access_key
-# 	echo "..."
-# 	tail -n 3 ~/.ssh/github_access_key
-# 	rm -f ~/.ssh/known_hosts
+# 	export GIT_SSH_COMMAND="ssh -i ~/.ssh/github_access_key"
 # 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-# 	ssh -i ~/.ssh/github_access_key git@github.com
-}
+# # 	chmod 660 ~/.ssh/github_access_key
+# # 	cat <<EOF > ~/.ssh/config
+# # Host github.com
+# #     HostName github.com
+# #     User git
+# #     IdentityFile ~/.ssh/github_access_key
+# # 	StrictHostKeyChecking no
+
+# # EOF
+# # 	head -n 3 ~/.ssh/github_access_key
+# # 	echo "..."
+# # 	tail -n 3 ~/.ssh/github_access_key
+# # 	rm -f ~/.ssh/known_hosts
+# # 	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+# # 	ssh -i ~/.ssh/github_access_key git@github.com
+# }
 
 add_requirements() {
 	if [ -f "requirements.txt" ]
@@ -104,6 +104,7 @@ show_environment() {
 
 echo "dpolombo/action-deploy-aws-lambda@v1.6"
 aws --version
+cd app
 show_environment
-authentify_github
+# authentify_github
 deploy_or_update_function
