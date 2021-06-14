@@ -14,7 +14,7 @@ add_requirements() {
 	then
 		setup_requirement_file
 		echo "Installing requirements..."
-		pip install --target libs -r temp_requirements.txt -t .
+		pip install --target libs -r temp_requirements.txt
 		if [ $? -ne 0 ]
 		then
 			echo "Fail to add requirements"
