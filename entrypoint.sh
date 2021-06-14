@@ -3,8 +3,13 @@
 authentify_github() {
 	echo "Authentication with github ssh key"
 
-	git config --global user.name "dktunited"
-	git config --global user.password ${INPUT_AUTH_SSH_KEY}
+	TOKEN=${INPUT_AUTH_SSH_KEY}
+
+	sed 's/https://github.com/https://$TOKEN:github.com' requirements.txt
+	sed 's/ssh://github.com/https://$TOKEN:github.com' requirements.txt
+
+	# git config --global user.name "dktunited"
+	# git config --global user.password ${INPUT_AUTH_SSH_KEY}
 # 	mkdir -p ~/.ssh
 # 	cat <<EOF > ~/.ssh/github_access_key
 # ${INPUT_AUTH_SSH_KEY}
