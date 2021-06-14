@@ -7,6 +7,7 @@ authentify_github() {
 ${INPUT_AUTH_SSH_KEY}
 EOF
 	export GIT_SSH_COMMAND="ssh -i ~/.ssh/github_access_key"
+	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 # 	chmod 660 ~/.ssh/github_access_key
 # 	cat <<EOF > ~/.ssh/config
 # Host github.com
