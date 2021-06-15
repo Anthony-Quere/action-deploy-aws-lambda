@@ -37,8 +37,11 @@ deploy_function() {
 		--timeout "${INPUT_TIMEOUT}" --memory-size "${INPUT_MEMORY}" --role "${INPUT_ROLE}" \
 		--handler "${INPUT_HANDLER}" ${OPT_ENV_VARIABLES} ${OPT_VPC_CONFIG} --zip-file fileb://code.zip
     RETCODE=$((RETCODE+$?))
-	[ $RETCODE -ne 0 ] && echo "> ERROR : failed to create the function."
-	exit $RETCODE
+	if [ $RETCODE -ne 0 ]
+	then
+		echo "> ERROR : failed to create the function."
+		exit $RETCODE
+	fi
 }
 
 update_function() {
@@ -53,8 +56,11 @@ update_function() {
     RETCODE=$((RETCODE+$?))
 	aws lambda update-function-code --function-name "${INPUT_FUNCTION_NAME}" --zip-file fileb://code.zip
     RETCODE=$((RETCODE+$?))
-	[ $RETCODE -ne 0 ] && echo "> ERROR : failed to update the function."
-	exit $RETCODE
+	if [ $RETCODE -ne 0 ]
+	then
+		echo "> ERROR : failed to update the function."
+		exit $RETCODE
+	fi
 }
 
 build_layer() {
@@ -105,6 +111,7 @@ show_environment() {
 	echo "> Working directory: ${INPUT_WORKING_DIRECTORY}"
 	echo "> Environment variables: ${INPUT_ENV_VARIABLES}"
 	echo "> VPC Config: ${INPUT_VPC_CONFIG}"
+	echo "> Lambda layer name: ${LAMBDA_LAYER_NAME}"
 }
 
 ctrl_vars() {
@@ -118,6 +125,7 @@ ctrl_vars() {
 
 echo "Anthony-Quere/action-deploy-aws-lambda@v1.6"
 aws --version
+ctrl_vars
 show_environment
 build_layer
 deploy_or_update_function
