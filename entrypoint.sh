@@ -15,7 +15,8 @@ add_requirements() {
 		setup_requirement_file
 		echo "Installing requirements..."
 		mkdir -p libs
-		pip install -vvv --target libs -r temp_requirements.txt
+		pip install -vvv -r temp_requirements.txt
+		# pip install -vvv --target libs -r temp_requirements.txt
 		if [ $? -ne 0 ]
 		then
 			echo "Fail to add requirements"
