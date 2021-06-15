@@ -63,7 +63,7 @@ build_layer() {
 	zip -r dependencies.zip ./python
 
 	echo "> Publish Layer"
-	result=$(aws lambda publish-layer-version --layer-name "${INPUT_LAMBDA_LAYER_NAME}" --zip-file fileb://dependencies.zip)
+	result=$(aws lambda publish-layer-version --layer-name "${LAMBDA_LAYER_NAME}" --zip-file fileb://dependencies.zip)
 	LAYER_VERSION_ARN=$(jq '.LayerVersionArn' <<< "$result")
 }
 
@@ -122,3 +122,4 @@ show_environment
 build_layer
 deploy_or_update_function
 set_function_layer
+
