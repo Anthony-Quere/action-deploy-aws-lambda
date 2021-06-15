@@ -5,8 +5,8 @@ setup_requirement_file() {
 
 	TOKEN=${INPUT_AUTH_SSH_KEY}
 
-	sed -i "s/https:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" app/requirements.txt
-	sed -i "s/ssh:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" 
+	sed -i "s/https:\/\/github\.com/https:\/\/$TOKEN@github\.com/1" app/requirements.txt
+	sed -i "s/ssh:\/\/github\.com/https:\/\/$TOKEN@github\.com/1" 
 }
 
 add_requirements() {
