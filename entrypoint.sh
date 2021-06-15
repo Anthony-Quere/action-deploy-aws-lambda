@@ -6,7 +6,7 @@ setup_requirement_file() {
 	TOKEN=${INPUT_AUTH_SSH_KEY}
 
 	sed -i "s/https:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" app/requirements.txt
-	sed -i "s/ssh:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" app/requirements.txt
+	sed -i "s/ssh:\/\/github\.com/https:\/\/$TOKEN:github\.com/1" 
 }
 
 add_requirements() {
@@ -17,8 +17,7 @@ add_requirements() {
 		echo "> Installing requirements..."
 
 		mkdir -p libs
-		pip install -vvv --target libs -r temp_requirements.txt
-		# pip install -vvv --target libs -r temp_requirements.txt
+		pip install -vvv --target libs -r app/requirements.txt
 		if [ $? -ne 0 ]
 		then
 			echo "> Fail to add requirements"
