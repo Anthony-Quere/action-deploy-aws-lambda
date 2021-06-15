@@ -5,19 +5,20 @@ setup_requirement_file() {
 
 	TOKEN=${INPUT_AUTH_SSH_KEY}
 
-	sed -i "s/https:\/\/github\.com/https:\/\/$TOKEN@github\.com/1" app/requirements.txt
-	sed -i "s/ssh:\/\/github\.com/https:\/\/$TOKEN@github\.com/1" 
+	sed -i "s/https:\/\/github\.com/https:\/\/$TOKEN@github\.com/1" requirements.txt
+	sed -i "s/ssh:\/\/github\.com/https:\/\/$TOKEN@github\.com/1" requirements.txt
 }
 
 add_requirements() {
 	if [ -f "app/requirements.txt" ]
 	then
+		cp app/requirements.txt requirements.txt
 		echo "> Setup requirement file..."
 		setup_requirement_file
 		echo "> Installing requirements..."
 
-		mkdir -p libs
-		pip install -vvv --target libs -r app/requirements.txt
+		mkdir -p python
+		pip install -vvv --target python -r requirements.txt
 		if [ $? -ne 0 ]
 		then
 			echo "> Fail to add requirements"
@@ -56,6 +57,16 @@ update_function() {
 	exit $RETCODE
 }
 
+build_layer() {
+	echo "> Build Layer"
+	add_requirements
+	zip -r dependencies.zip ./python
+
+	echo "> Publish Layer"
+	result=$(aws lambda publish-layer-version --layer-name "${INPUT_LAMBDA_LAYER_NAME}" --zip-file fileb://dependencies.zip)
+	LAYER_VERSION_ARN=$(jq '.LayerVersionArn' <<< "$result")
+}
+
 deploy_or_update_function() {
 	cd app
 	if [ -n "${INPUT_ENV_VARIABLES}" ]
@@ -79,6 +90,11 @@ deploy_or_update_function() {
     echo "> Done."
 }
 
+set_function_layer() {
+	echo "> Update function layer"
+	aws lambda update-function-configuration --function-name "${INPUT_FUNCTION_NAME}" --layers ${LAYER_VERSION_ARN}
+}
+
 show_environment() {
 	echo "> Function name: ${INPUT_FUNCTION_NAME}"
 	echo "> Runtime: ${INPUT_RUNTIME}"
@@ -91,15 +107,18 @@ show_environment() {
 	echo "> VPC Config: ${INPUT_VPC_CONFIG}"
 }
 
+ctrl_vars() {
+	if [-z INPUT_LAMBDA_LAYER_NAME] 
+	then
+		LAMBDA_LAYER_NAME=$INPUT_LAMBDA_LAYER_NAME
+	else
+		LAMBDA_LAYER_NAME="layer-$INPUT_FUNCTION_NAME"
+	fi
+}
+
 echo "Anthony-Quere/action-deploy-aws-lambda@v1.6"
 aws --version
 show_environment
-add_requirements
-
-echo "> ls"
-ls
-
-echo "> ls libs"
-ls libs
-
+build_layer
 deploy_or_update_function
+set_function_layer
