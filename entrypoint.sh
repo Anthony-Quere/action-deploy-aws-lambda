@@ -70,7 +70,7 @@ build_layer() {
 
 	echo "> Publish Layer"
 	result=$(aws lambda publish-layer-version --layer-name "${LAMBDA_LAYER_NAME}" --zip-file fileb://dependencies.zip)
-	LAYER_VERSION_ARN=$(jq '.LayerVersionArn' <<< "$result")
+	LAYER_VERSION_ARN=$(jq -r '.LayerVersionArn' <<< "$result")
 }
 
 deploy_or_update_function() {
@@ -130,4 +130,3 @@ show_environment
 build_layer
 deploy_or_update_function
 set_function_layer
-
