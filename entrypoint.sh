@@ -14,6 +14,12 @@ add_requirements() {
 	then
 		setup_requirement_file
 		echo "Installing requirements..."
+		echo "> cat app/requirements.txt"
+		cat app/requirements.txt
+
+		echo "> cat temp_requirements.txt"
+		cat temp_requirements.txt
+
 		mkdir -p libs
 		pip install -vvv --target app -r temp_requirements.txt
 		# pip install -vvv --target libs -r temp_requirements.txt
@@ -95,10 +101,10 @@ aws --version
 show_environment
 add_requirements
 
-echo "ls"
+echo "> ls"
 ls
 
-echo "ls libs"
+echo "> ls libs"
 ls libs
 
 deploy_or_update_function
